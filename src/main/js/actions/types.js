@@ -1,0 +1,4 @@
+export const GET_STATS = "GET_STATS";
+export const SELECT_COUNTRY = "SELECT_COUNTRY";
+export const SHOW_GLOBE = "SHOW_GLOBE";
+export const GET_HISTORICAL_STATS = "GET_HISTORICAL_STATS";
