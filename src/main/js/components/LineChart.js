@@ -7,7 +7,7 @@ import {
   Line,
   CartesianGrid,
   XAxis,
-  YAxis
+  YAxis,
 } from "recharts";
 import { getAllHistoricalStats } from "../actions/statsAction";
 
@@ -21,7 +21,7 @@ export class Chart extends Component {
   toggleShowALlProvince() {
     this.setState({
       isShowAllProvince: !this.state.isShowAllProvince,
-      toggleCheck: !this.state.toggleCheck
+      toggleCheck: !this.state.toggleCheck,
     });
   }
 
@@ -41,7 +41,7 @@ export class Chart extends Component {
     const showAllProvince =
       isShowAllProvince &&
       this.props.historicalStatsByCountry.length > 1 &&
-      this.props.historicalStatsByCountry.map(stat => (
+      this.props.historicalStatsByCountry.map((stat) => (
         <div className="province-container">
           <h4 className="province-header">{stat.state}</h4>
           <div className="chart">
@@ -82,7 +82,12 @@ export class Chart extends Component {
               data={this.props.historicalStatsSumByCountry}
               margin={{ top: 5, right: 20, bottom: 5, left: 10 }}
             >
-              <Line type="monotone" dataKey="number" stroke="#8884d8" />
+              <Line
+                type="monotone"
+                dataKey="number"
+                stroke="#8884d8"
+                dot={false}
+              />
               <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
               <XAxis dataKey="date" />
               <YAxis />
@@ -96,14 +101,11 @@ export class Chart extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   country: state.stats.country,
   isCountrySelected: state.stats.isCountrySelected,
   historicalStatsByCountry: state.stats.historicalStatsByCountry,
-  historicalStatsSumByCountry: state.stats.historicalStatsSumByCountry
+  historicalStatsSumByCountry: state.stats.historicalStatsSumByCountry,
 });
 
-export default connect(
-  mapStateToProps,
-  { getAllHistoricalStats }
-)(Chart);
+export default connect(mapStateToProps, { getAllHistoricalStats })(Chart);
