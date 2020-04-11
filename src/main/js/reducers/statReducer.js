@@ -2,7 +2,8 @@ import {
   GET_STATS,
   SELECT_COUNTRY,
   SHOW_GLOBE,
-  GET_HISTORICAL_STATS
+  GET_HISTORICAL_STATS,
+  GET_PROVINCE_CHART,
 } from "../actions/types";
 
 const initialState = {
@@ -15,10 +16,10 @@ const initialState = {
   country: "",
   historicalStats: [],
   historicalStatsByCountry: [],
-  historicalStatsSumByCountry: []
+  historicalStatsSumByCountry: [],
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case GET_STATS:
       return {
@@ -27,7 +28,7 @@ export default function(state = initialState, action) {
         allStats: action.payload.allStats,
         totalCasesReported: action.payload.total,
         countries: action.payload.countries,
-        lastUpdatedDate: action.payload.allStats[0].lastUpdatedDate
+        lastUpdatedDate: action.payload.allStats[0].lastUpdatedDate,
       };
     case SELECT_COUNTRY:
       return {
@@ -35,40 +36,47 @@ export default function(state = initialState, action) {
         isCountrySelected: true,
         country: action.payload,
         allStats: state.globeStats.filter(
-          stat => stat.country == action.payload
+          (stat) => stat.country == action.payload
         ),
         historicalStatsByCountry: state.historicalStats.filter(
-          stat => stat.country == action.payload
+          (stat) => stat.country == action.payload
         ),
         historicalStatsSumByCountry: sumByDate(
           state.historicalStats
-            .filter(stat => stat.country == action.payload)
-            .map(stat =>
-              stat.hisData.map(data => ({
+            .filter((stat) => stat.country == action.payload)
+            .map((stat) =>
+              stat.hisData.map((data) => ({
                 date: data.date,
-                number: data.number
+                number: data.number,
               }))
             )
-        )
+        ),
+      };
+    case GET_PROVINCE_CHART:
+      return {
+        ...state,
+        historicalStatsByCountry: state.historicalStatsByCountry.filter(
+          (stat) => stat.state == action.payload
+        ),
       };
     case SHOW_GLOBE:
       return {
         ...state,
         allStats: state.globeStats,
         isCountrySelected: false,
-        country: ""
+        country: "",
       };
     case GET_HISTORICAL_STATS:
       return {
         ...state,
-        historicalStats: action.payload
+        historicalStats: action.payload,
       };
     default:
       return state;
   }
 }
 
-const sumByDate = data => {
+const sumByDate = (data) => {
   var numberOfDate = data[0].length;
   var numberOfProvinces = data.length;
   var result = new Array();

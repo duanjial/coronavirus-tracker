@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import ToggleSwitch from "./ToggleSwitch";
+import AllProvincesBar from "./AllProvincesBar";
+
 import { connect } from "react-redux";
 import {
   LineChart,
@@ -37,11 +39,18 @@ export class Chart extends Component {
 
   render() {
     const { isShowAllProvince } = this.state;
+    const stats = this.props.historicalStatsByCountry;
+    const len = stats.length;
+
+    const allProvincesBar = isShowAllProvince && len >= 1 && stats[0].state && (
+      <AllProvincesBar />
+    );
 
     const showAllProvince =
       isShowAllProvince &&
-      this.props.historicalStatsByCountry.length > 1 &&
-      this.props.historicalStatsByCountry.map((stat) => (
+      len >= 1 &&
+      stats[0].state &&
+      stats.map((stat) => (
         <div className="province-container">
           <h4 className="province-header">{stat.state}</h4>
           <div className="chart">
@@ -51,7 +60,12 @@ export class Chart extends Component {
               data={stat.hisData}
               margin={{ top: 5, right: 20, bottom: 5, left: 10 }}
             >
-              <Line type="monotone" dataKey="number" stroke="#8884d8" />
+              <Line
+                type="monotone"
+                dataKey="number"
+                stroke="#8884d8"
+                dot={false}
+              />
               <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
               <XAxis dataKey="date" />
               <YAxis />
@@ -94,6 +108,7 @@ export class Chart extends Component {
               <Tooltip />
             </LineChart>
           </div>
+          {allProvincesBar}
           {showAllProvince}
         </div>
       )
