@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import Header from "./Header";
+import Card from "./Card";
 
 export class Dashboard extends Component {
   render() {
     const totalReportedCases = this.props.totalCasesReported;
     return (
       <div>
-        <h1>CoronaVirus Tracker Application</h1>
-        <p>
-          This application lists the current number of cases reported across the
-          globe
-        </p>
+        <Header />
         <div className="jumbotron row">
           <div className="col-md-8">
             <h1 className="display-4">{totalReportedCases}</h1>
@@ -36,6 +34,7 @@ export class Dashboard extends Component {
             </div>
           )}
         </div>
+        <Card />
       </div>
     );
   }

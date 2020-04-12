@@ -111,6 +111,15 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+.card-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.card {
+  background-color: #dae5f4;
+}
+
 .province-container {
   margin-top: 10px;
 }
