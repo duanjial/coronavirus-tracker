@@ -26,4 +26,28 @@ public class AllStatsController {
         String jsonAllHistoricalStats = coronaVirusDataService.getJsonAllHistoricalStats();
         return jsonAllHistoricalStats;
     }
+
+    @GetMapping("/allRecoveredStats")
+    public String allRecoveredStats() {
+        String jsonAllRecoveredStats = coronaVirusDataService.getJsonAllRecoveredStats();
+        return jsonAllRecoveredStats;
+    }
+
+    @GetMapping("/allRecoveredHistoricalStats")
+    public String allRecoveredHistoricalStats() {
+        String jsonAllReocveredHistoricalStats = coronaVirusDataService.getJsonAllRecoveredHistoricalStats();
+        return jsonAllReocveredHistoricalStats;
+    }
+
+    @GetMapping("/allDeathsStats")
+    public String allDeathsStats() {
+        String jsonAllDeathsStats = coronaVirusDataService.getJsonAllDeathsStats();
+        return jsonAllDeathsStats;
+    }
+
+    @GetMapping("/allDeathsHistoricalStats")
+    public String allDeathsHistoricalStats() {
+        String jsonAllDeathsHistoricalStats = coronaVirusDataService.getJsonAllDeathsHistoricalStats();
+        return jsonAllDeathsHistoricalStats;
+    }
 }

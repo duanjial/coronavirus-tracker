@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getAllStats } from "../actions/statsAction";
 
 export class StatsTable extends Component {
-  componentDidMount() {
-    this.props.getAllStats();
-  }
-
   render() {
-    const stats = this.props.allStats.map(stat => (
+    const stats = this.props.allStats.map((stat) => (
       <tr className="table-row">
         <td>{stat.state}</td>
         <td>{stat.country}</td>
@@ -44,11 +39,8 @@ export class StatsTable extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  allStats: state.stats.allStats
+const mapStateToProps = (state) => ({
+  allStats: state.stats.allStats,
 });
 
-export default connect(
-  mapStateToProps,
-  { getAllStats }
-)(StatsTable);
+export default connect(mapStateToProps)(StatsTable);
