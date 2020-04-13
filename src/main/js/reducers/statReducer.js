@@ -18,8 +18,7 @@ const initialState = {
   historicalStats: [],
   historicalStatsByCountry: [],
   historicalStatsSumByCountry: [],
-  showTotalDetails: false,
-  globalReset: true
+  showTotalDetails: false
 };
 
 export default function(state = initialState, action) {
@@ -69,7 +68,7 @@ export default function(state = initialState, action) {
         allStats: state.globeStats,
         isCountrySelected: false,
         country: "",
-        globalReset: false
+        showTotalDetails: false
       };
     case GET_HISTORICAL_STATS:
       return {

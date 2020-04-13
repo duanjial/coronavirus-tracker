@@ -2,7 +2,8 @@ import {
   GET_RECOVERED_STATS,
   GET_RECOVERED_HISTORICAL_STATS,
   SELECT_COUNTRY,
-  CHANGE_ON_RECOVERED_CLICK_FLAG
+  CHANGE_ON_RECOVERED_CLICK_FLAG,
+  SHOW_GLOBE
 } from "../actions/types";
 
 import { sumByDate } from "./statReducer";
@@ -34,7 +35,7 @@ export default function(state = initialState, action) {
     case SELECT_COUNTRY:
       return {
         ...state,
-        showRecoveredDetailes: false,
+        showRecoveredDetails: false,
         allRecoveredStats: state.globalRecoveredStats.filter(
           stat => stat.country == action.payload
         ),
@@ -52,6 +53,12 @@ export default function(state = initialState, action) {
           .filter(stat => stat.country == action.payload)
           .map(data => data.latestTotalCases)
           .reduce((sum, cur) => sum + cur, 0)
+      };
+    case SHOW_GLOBE:
+      return {
+        ...state,
+        allRecoveredStats: state.globalRecoveredStats,
+        showRecoveredDetails: false
       };
     case CHANGE_ON_RECOVERED_CLICK_FLAG:
       return {

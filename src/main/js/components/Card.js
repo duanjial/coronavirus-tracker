@@ -55,14 +55,20 @@ export class Card extends Component {
     const totalCasesByCountry = this.props.allStats
       .map(stat => stat.latestTotalCases)
       .reduce((sum, cur) => sum + cur, 0);
+    const recoveredCasesByCountry = this.props.allRecoveredStats
+      .map(stat => stat.latestTotalCases)
+      .reduce((sum, cur) => sum + cur, 0);
+    const deathsCasesByCountry = this.props.allDeathsStats
+      .map(stat => stat.latestTotalCases)
+      .reduce((sum, cur) => sum + cur, 0);
     const totalCases = this.props.isCountrySelected
       ? totalCasesByCountry
       : this.props.totalCasesReported;
     const totalRecovered = this.props.isCountrySelected
-      ? this.props.totalRecoveredCasesByCountry
+      ? recoveredCasesByCountry
       : this.props.totalRecoveredCasesReported;
     const totalDeaths = this.props.isCountrySelected
-      ? this.props.totalDeathsCasesByCountry
+      ? deathsCasesByCountry
       : this.props.totalDeathsCasesReported;
 
     const title = this.props.isCountrySelected ? this.props.country : "Globe";

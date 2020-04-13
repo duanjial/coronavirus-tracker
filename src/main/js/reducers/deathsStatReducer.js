@@ -2,7 +2,8 @@ import {
   GET_DEATHS_STATS,
   GET_DEATHS_HISTORICAL_STATS,
   SELECT_COUNTRY,
-  CHANGE_ON_DEATHS_CLICK_FLAG
+  CHANGE_ON_DEATHS_CLICK_FLAG,
+  SHOW_GLOBE
 } from "../actions/types";
 
 import { sumByDate } from "./statReducer";
@@ -52,6 +53,12 @@ export default function(state = initialState, action) {
           .filter(stat => stat.country == action.payload)
           .map(data => data.latestTotalCases)
           .reduce((sum, cur) => sum + cur, 0)
+      };
+    case SHOW_GLOBE:
+      return {
+        ...state,
+        allDeathsStats: state.globalDeathsStats,
+        showDeathsDetails: false
       };
     case CHANGE_ON_DEATHS_CLICK_FLAG:
       return {
