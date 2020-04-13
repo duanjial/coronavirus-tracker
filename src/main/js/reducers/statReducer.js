@@ -4,6 +4,7 @@ import {
   SHOW_GLOBE,
   GET_HISTORICAL_STATS,
   GET_PROVINCE_CHART,
+  CHANGE_ON_TOTAL_CLICK_FLAG
 } from "../actions/types";
 
 const initialState = {
@@ -17,9 +18,11 @@ const initialState = {
   historicalStats: [],
   historicalStatsByCountry: [],
   historicalStatsSumByCountry: [],
+  showTotalDetails: false,
+  globalReset: true
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case GET_STATS:
       return {
@@ -28,36 +31,37 @@ export default function (state = initialState, action) {
         allStats: action.payload.allStats,
         totalCasesReported: action.payload.total,
         countries: action.payload.countries,
-        lastUpdatedDate: action.payload.allStats[0].lastUpdatedDate,
+        lastUpdatedDate: action.payload.allStats[0].lastUpdatedDate
       };
     case SELECT_COUNTRY:
       return {
         ...state,
         isCountrySelected: true,
         country: action.payload,
+        showTotalDetails: false,
         allStats: state.globeStats.filter(
-          (stat) => stat.country == action.payload
+          stat => stat.country == action.payload
         ),
         historicalStatsByCountry: state.historicalStats.filter(
-          (stat) => stat.country == action.payload
+          stat => stat.country == action.payload
         ),
         historicalStatsSumByCountry: sumByDate(
           state.historicalStats
-            .filter((stat) => stat.country == action.payload)
-            .map((stat) =>
-              stat.hisData.map((data) => ({
+            .filter(stat => stat.country == action.payload)
+            .map(stat =>
+              stat.hisData.map(data => ({
                 date: data.date,
-                number: data.number,
+                number: data.number
               }))
             )
-        ),
+        )
       };
     case GET_PROVINCE_CHART:
       return {
         ...state,
         historicalStatsByCountry: state.historicalStatsByCountry.filter(
-          (stat) => stat.state == action.payload
-        ),
+          stat => stat.state == action.payload
+        )
       };
     case SHOW_GLOBE:
       return {
@@ -65,18 +69,24 @@ export default function (state = initialState, action) {
         allStats: state.globeStats,
         isCountrySelected: false,
         country: "",
+        globalReset: false
       };
     case GET_HISTORICAL_STATS:
       return {
         ...state,
-        historicalStats: action.payload,
+        historicalStats: action.payload
+      };
+    case CHANGE_ON_TOTAL_CLICK_FLAG:
+      return {
+        ...state,
+        showTotalDetails: !state.showTotalDetails
       };
     default:
       return state;
   }
 }
 
-const sumByDate = (data) => {
+export const sumByDate = data => {
   var numberOfDate = data[0].length;
   var numberOfProvinces = data.length;
   var result = new Array();

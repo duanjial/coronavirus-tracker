@@ -9,7 +9,7 @@ import {
   Line,
   CartesianGrid,
   XAxis,
-  YAxis,
+  YAxis
 } from "recharts";
 import { getAllHistoricalStats } from "../actions/statsAction";
 
@@ -23,7 +23,7 @@ export class Chart extends Component {
   toggleShowALlProvince() {
     this.setState({
       isShowAllProvince: !this.state.isShowAllProvince,
-      toggleCheck: !this.state.toggleCheck,
+      toggleCheck: !this.state.toggleCheck
     });
   }
 
@@ -42,6 +42,11 @@ export class Chart extends Component {
     const stats = this.props.historicalStatsByCountry;
     const len = stats.length;
 
+    const graphData = combineAll(
+      this.props.historicalStatsSumByCountry,
+      this.props.recoveredCasesByCountryStats,
+      this.props.deathsCasesByCountryStats
+    );
     const allProvincesBar = isShowAllProvince && len >= 1 && stats[0].state && (
       <AllProvincesBar />
     );
@@ -50,7 +55,7 @@ export class Chart extends Component {
       isShowAllProvince &&
       len >= 1 &&
       stats[0].state &&
-      stats.map((stat) => (
+      stats.map(stat => (
         <div className="province-container">
           <h4 className="province-header">{stat.state}</h4>
           <div className="chart">
@@ -76,7 +81,8 @@ export class Chart extends Component {
       ));
 
     return (
-      this.props.isCountrySelected && (
+      this.props.isCountrySelected &&
+      this.props.showTotalDetails && (
         <div className="line-chart">
           <div className="chart-header row">
             <h3 className="col-md-8">
@@ -93,13 +99,25 @@ export class Chart extends Component {
             <LineChart
               width={800}
               height={300}
-              data={this.props.historicalStatsSumByCountry}
+              data={graphData}
               margin={{ top: 5, right: 20, bottom: 5, left: 10 }}
             >
               <Line
                 type="monotone"
-                dataKey="number"
+                dataKey="totalCases"
                 stroke="#8884d8"
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="recoveredCases"
+                stroke="#82ca9d"
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="deathsCases"
+                stroke="#ff0000"
                 dot={false}
               />
               <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
@@ -116,11 +134,32 @@ export class Chart extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   country: state.stats.country,
+  showTotalDetails: state.stats.showTotalDetails,
   isCountrySelected: state.stats.isCountrySelected,
   historicalStatsByCountry: state.stats.historicalStatsByCountry,
   historicalStatsSumByCountry: state.stats.historicalStatsSumByCountry,
+  recoveredCasesByCountryStats:
+    state.recoveredStats.recoveredCasesByCountryStats,
+  deathsCasesByCountryStats: state.deathsStats.deathsCasesByCountryStats
 });
 
-export default connect(mapStateToProps, { getAllHistoricalStats })(Chart);
+const combineAll = (total, recovered, deaths) => {
+  const size = total.length;
+  const results = new Array();
+  for (var i = 0; i < size; i++) {
+    results.push({
+      date: total[i].date,
+      totalCases: total[i].number,
+      recoveredCases: recovered[i].number,
+      deathsCases: deaths[i].number
+    });
+  }
+  return results;
+};
+
+export default connect(
+  mapStateToProps,
+  { getAllHistoricalStats }
+)(Chart);

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Dashboard from "./components/Dashboard";
 import StatsTable from "./components/StatsTable";
 import OptionBar from "./components/OptionBar";
+import DetailBoard from "./components/DetailBoard";
 import { Provider } from "react-redux";
 import store from "./store";
 
@@ -14,7 +15,7 @@ export default class App extends Component {
         <div className="container">
           <Dashboard />
           <OptionBar />
-          <StatsTable />
+          <DetailBoard />
           <Chart />
         </div>
       </Provider>
