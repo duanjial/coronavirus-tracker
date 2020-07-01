@@ -12,15 +12,18 @@ export class AllProvincesBar extends Component {
   }
 
   render() {
-    const allProvinces = this.props.historicalStatsByCountry.map((stat) => (
-      <button
-        type="button"
-        className="btn btn-info"
-        onClick={this.onProvinceButtonClick.bind(this, stat.state)}
-      >
-        {stat.state}
-      </button>
-    ));
+    const allProvinces = this.props.historicalStatsByCountry.map(
+      (stat, index) => (
+        <button
+          key={index}
+          type="button"
+          className="btn btn-info"
+          onClick={this.onProvinceButtonClick.bind(this, stat.state)}
+        >
+          {stat.state}
+        </button>
+      )
+    );
     return (
       <div className="province-buttons-container">
         <button
@@ -36,11 +39,12 @@ export class AllProvincesBar extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   historicalStatsByCountry: state.stats.historicalStatsByCountry,
-  country: state.stats.country,
+  country: state.stats.country
 });
 
-export default connect(mapStateToProps, { getProvinceChart, selectCountry })(
-  AllProvincesBar
-);
+export default connect(
+  mapStateToProps,
+  { getProvinceChart, selectCountry }
+)(AllProvincesBar);
