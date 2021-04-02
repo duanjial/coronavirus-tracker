@@ -4,7 +4,8 @@
   "description": "Coronavirus tracker application",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --watch -d"
+    "watch": "webpack --watch -d",
+    "build": "webpack"
   },
   "author": "Carlo Duan",
   "license": "MIT",
